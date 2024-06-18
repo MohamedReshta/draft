@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language Output</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    <h1>Sign Language Output</h1>
+
+    <!-- Search input for feedback -->
+    <label for="feedback-search">Search Feedback:</label>
+    <input type="text" id="feedback-search" placeholder="Enter feedback">
+
+    <!-- Table for displaying the output -->
+    <table id="output-table" class="display">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Feedback</th>
+                <th>Frame Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sign in signs %}
+            <tr>
+                <td>{{ sign[0] }}</td>
+                <td>{{ sign[1] }}</td>
+                <td>{{ sign[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Display feedback percentages -->
+    <h2>Feedback Percentages</h2>
+    <ul>
+        {% for feedback, percentage in feedback_percentages.items() %}
+        <li>{{ feedback }}: {{ percentage }}%</li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        $(document).ready(function() {
+            var table = $('#output-table').DataTable();
+
+            // Custom search for feedback
+            $('#feedback-search').on('keyup', function() {
+                table.columns(1).search(this.value).draw();
+            });
+
+            // Limitation feature
+            var limit = 10; // Adjust the limit as needed
+            table.page.len(limit).draw();
+        });
+    </script>
+</body>
+</html>
